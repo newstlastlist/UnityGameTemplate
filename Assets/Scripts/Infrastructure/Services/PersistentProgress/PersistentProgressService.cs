@@ -1,4 +1,3 @@
-using CodeBase.Infrastructure.Services.PersistentProgress;
 using Data;
 
 namespace Infrastructure.Services.PersistentProgress

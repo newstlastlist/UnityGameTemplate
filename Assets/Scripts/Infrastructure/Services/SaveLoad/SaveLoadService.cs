@@ -1,4 +1,3 @@
-using CodeBase.Infrastructure.Services.PersistentProgress;
 using Data;
 using Infrastructure.Factory;
 using Infrastructure.Services.PersistentProgress;

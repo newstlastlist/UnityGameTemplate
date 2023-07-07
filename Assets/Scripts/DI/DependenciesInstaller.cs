@@ -1,4 +1,3 @@
-using CodeBase.Infrastructure.Services.PersistentProgress;
 using Infrastructure;
 using Infrastructure.AssetManagement;
 using Infrastructure.Factory;
@@ -30,6 +29,7 @@ public class DependenciesInstaller : MonoInstaller
         Container.Bind<LoadLevelState>().AsTransient();
         Container.Bind<BootstrapState>().AsTransient();
         Container.Bind<GameLoopState>().AsTransient();
+        Container.Bind<LoadProgressState>().AsTransient();
         
         //game
         Container.Bind<Game>().AsSingle();

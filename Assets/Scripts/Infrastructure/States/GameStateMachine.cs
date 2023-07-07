@@ -12,19 +12,22 @@ namespace Infrastructure.States
         private LoadLevelState _loadLevelState;
         private BootstrapState _bootstrapState;
         private GameLoopState _gameLoopState;
+        private LoadProgressState _loadProgressState;
         
         [Inject]
-        public GameStateMachine(LoadLevelState loadLevelState, BootstrapState bootstrapState, GameLoopState gameLoopState)
+        public GameStateMachine(LoadLevelState loadLevelState, BootstrapState bootstrapState, GameLoopState gameLoopState, LoadProgressState loadProgressState)
         {
             _loadLevelState = loadLevelState;
             _bootstrapState = bootstrapState;
             _gameLoopState = gameLoopState;
+            _loadProgressState = loadProgressState;
             
             _states = new Dictionary<Type, IExitableState>
             {
                 [typeof(BootstrapState)] = _bootstrapState,
                 [typeof(LoadLevelState)] = _loadLevelState,
                 [typeof(GameLoopState)] = _gameLoopState,
+                [typeof(LoadProgressState)] = _loadProgressState,
             };
         }
 
