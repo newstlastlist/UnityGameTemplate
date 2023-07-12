@@ -1,5 +1,6 @@
 using Infrastructure;
 using Infrastructure.AssetManagement;
+using Infrastructure.AudioManagement;
 using Infrastructure.Factory;
 using Infrastructure.SceneManagement;
 using Infrastructure.Services.PersistentProgress;
@@ -12,29 +13,60 @@ using Zenject;
 public class DependenciesInstaller : MonoInstaller
 {
     [SerializeField] private LoadingScreen _loadingScreen;
+    [SerializeField] private AudioService _audioService;
     public override void InstallBindings()
+    {
+        SceneLoaderInstall();
+
+        FactoriesInstall();
+        
+        SaveSystemInstall();
+
+        GameStateMachineInstall();
+
+        GameInstall();
+        
+        AssetsServiecesInstall();
+    }
+
+    private void AssetsServiecesInstall()
+    {
+        Container.Bind<IAssetProvider>().To<AssetProvider>().AsSingle();
+    }
+
+    private void GameInstall()
+    {
+        Container.Bind<Game>().AsSingle();
+    }
+
+    private void SceneLoaderInstall()
     {
         Container.Bind<SceneLoader>().AsSingle();
         Container.Bind<LoadingScreen>().FromInstance(_loadingScreen).AsSingle();
-        
-        //factories
+    }
+
+    private void FactoriesInstall()
+    {
         Container.Bind<IGameFactory>().To<GameFactory>().AsSingle();
-        
-        //save system
+    }
+
+    private void SaveSystemInstall()
+    {
         Container.Bind<IPersistentProgressService>().To<PersistentProgressService>().AsSingle();
         Container.Bind<ISaveLoadService>().To<SaveLoadService>().AsSingle();
-        
-        //states
+    }
+
+    private void GameStateMachineInstall()
+    {
         Container.Bind<GameStateMachine>().AsSingle();
         Container.Bind<LoadLevelState>().AsTransient();
         Container.Bind<BootstrapState>().AsTransient();
         Container.Bind<GameLoopState>().AsTransient();
         Container.Bind<LoadProgressState>().AsTransient();
-        
-        //game
-        Container.Bind<Game>().AsSingle();
-        
-        //assets
-        Container.Bind<IAssetProvider>().To<AssetProvider>().AsSingle();
+    }
+
+    private void AudioInstall()
+    {
+        Container.Bind<AudioService>().FromInstance(_audioService).AsSingle();
     }
 }
