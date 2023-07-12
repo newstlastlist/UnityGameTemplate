@@ -27,6 +27,8 @@ public class DependenciesInstaller : MonoInstaller
         GameInstall();
         
         AssetsServiecesInstall();
+        
+        AudioServiceInstall();
     }
 
     private void AssetsServiecesInstall()
@@ -65,7 +67,7 @@ public class DependenciesInstaller : MonoInstaller
         Container.Bind<LoadProgressState>().AsTransient();
     }
 
-    private void AudioInstall()
+    private void AudioServiceInstall()
     {
         Container.Bind<AudioService>().FromInstance(_audioService).AsSingle();
     }
