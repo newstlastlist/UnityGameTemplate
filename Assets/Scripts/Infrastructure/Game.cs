@@ -5,8 +5,13 @@ namespace Infrastructure
 {
     public class Game
     {
-        [Inject]
         public GameStateMachine StateMachine;
+        
+        [Inject]
+        public Game(GameStateMachine gameStateMachine)
+        {
+            StateMachine = gameStateMachine;
+        }
         
     }
 }
