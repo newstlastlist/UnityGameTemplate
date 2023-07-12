@@ -4,15 +4,21 @@ using Zenject;
 
 namespace Infrastructure
 {
-    public class GameBootstrapper : MonoBehaviour, ICoroutineRunner
+    public class GameBootstrapper : MonoBehaviour
     {
-        [Inject]
         private Game _game;
 
-        private void Awake()
+        [Inject]
+        public void Construct(Game game)
         {
-            _game.StateMachine.Enter<BootstrapState>();
+            _game = game;
+        }
 
+        private void Start()
+        {
+            print(_game == null);
+            _game.StateMachine.Enter<BootstrapState>();
+        
             DontDestroyOnLoad(this);
         }
     }
