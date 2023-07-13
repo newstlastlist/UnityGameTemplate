@@ -14,8 +14,7 @@ namespace Infrastructure.States
         private IGameFactory _gameFactory;
         private IPersistentProgressService _progressService;
 
-        [Inject]
-        public void Construct(GameStateMachine gameStateMachine, SceneLoader sceneLoader, LoadingScreen loadingScreen, IGameFactory gameFactory,
+        public LoadLevelState(GameStateMachine gameStateMachine, SceneLoader sceneLoader, LoadingScreen loadingScreen, IGameFactory gameFactory,
             IPersistentProgressService progressService)
         {
             _stateMachine = gameStateMachine;

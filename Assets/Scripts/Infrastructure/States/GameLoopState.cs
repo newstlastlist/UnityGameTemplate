@@ -6,8 +6,7 @@ namespace Infrastructure.States
     {
         private GameStateMachine _stateMachine;
 
-        [Inject]
-        public void Construct(GameStateMachine stateMachine)
+        public GameLoopState(GameStateMachine stateMachine)
         {
             _stateMachine = stateMachine;
         }

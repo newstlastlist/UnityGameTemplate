@@ -1,5 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using Infrastructure.Factory;
+using Infrastructure.SceneManagement;
+using Infrastructure.Services.PersistentProgress;
+using Infrastructure.Services.SaveLoad;
+using Infrastructure.UI;
 using Zenject;
 
 namespace Infrastructure.States
@@ -8,26 +13,17 @@ namespace Infrastructure.States
     {
         private Dictionary<Type, IExitableState> _states;
         private IExitableState _activeState;
-
-        private LoadLevelState _loadLevelState;
-        private BootstrapState _bootstrapState;
-        private GameLoopState _gameLoopState;
-        private LoadProgressState _loadProgressState;
         
         [Inject]
-        public GameStateMachine(LoadLevelState loadLevelState, BootstrapState bootstrapState, GameLoopState gameLoopState, LoadProgressState loadProgressState)
+        public GameStateMachine(SceneLoader sceneLoader, LoadingScreen loadingScreen, GameFactory gameFactory, PersistentProgressService progressService
+            , SaveLoadService saveLoadService)
         {
-            _loadLevelState = loadLevelState;
-            _bootstrapState = bootstrapState;
-            _gameLoopState = gameLoopState;
-            _loadProgressState = loadProgressState;
-            
             _states = new Dictionary<Type, IExitableState>
             {
-                [typeof(BootstrapState)] = _bootstrapState,
-                [typeof(LoadLevelState)] = _loadLevelState,
-                [typeof(GameLoopState)] = _gameLoopState,
-                [typeof(LoadProgressState)] = _loadProgressState,
+                [typeof(BootstrapState)] = new BootstrapState(this, sceneLoader),
+                [typeof(LoadLevelState)] = new LoadLevelState(this, sceneLoader, loadingScreen, gameFactory, progressService),
+                [typeof(GameLoopState)] = new GameLoopState(this),
+                [typeof(LoadProgressState)] = new LoadProgressState(this, progressService, saveLoadService)
             };
         }
 

@@ -11,7 +11,6 @@ namespace Infrastructure.States
         private readonly IPersistentProgressService _progressService;
         private readonly ISaveLoadService _saveLoadProgress;
 
-        [Inject]
         public LoadProgressState(GameStateMachine gameStateMachine, IPersistentProgressService progressService, ISaveLoadService saveLoadProgress)
         {
             _gameStateMachine = gameStateMachine;
