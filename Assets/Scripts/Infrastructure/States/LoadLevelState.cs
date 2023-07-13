@@ -8,8 +8,6 @@ namespace Infrastructure.States
 {
     public class LoadLevelState : IPayloadedState<string>
     {
-        private const string InitialPointTag = "InitialPoint";
-
         private GameStateMachine _stateMachine;
         private SceneLoader _sceneLoader;
         private LoadingScreen _loadingScreen;

@@ -1,17 +1,26 @@
 using UnityEngine;
+using Zenject;
 
 namespace Infrastructure
 {
-  public class GameRunner : MonoBehaviour
-  {
-    public GameBootstrapper BootstrapperPrefab;
-    private void Awake()
+    public class GameRunner : MonoBehaviour
     {
-      var bootstrapper = FindObjectOfType<GameBootstrapper>();
-      
-      if(bootstrapper != null) return;
+        public GameBootstrapper BootstrapperPrefab;
+        private DiContainer _diContainer;
 
-      Instantiate(BootstrapperPrefab);
+        [Inject]
+        public void Construct(DiContainer diContainer)
+        {
+            _diContainer = diContainer;
+        }
+
+        private void Awake()
+        {
+            var bootstrapper = FindObjectOfType<GameBootstrapper>();
+
+            if (bootstrapper != null) return;
+
+            _diContainer.InstantiatePrefab(BootstrapperPrefab);
+        }
     }
-  }
 }

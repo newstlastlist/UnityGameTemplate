@@ -25,8 +25,9 @@ namespace Infrastructure.States
         {
         }
 
-        private void EnterLoadLevel() =>
+        private void EnterLoadLevel()
+        {
             _stateMachine.Enter<LoadLevelState, string>("Level1");
-       
+        }
     }
 }
