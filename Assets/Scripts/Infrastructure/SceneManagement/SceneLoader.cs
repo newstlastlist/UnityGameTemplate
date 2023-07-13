@@ -5,34 +5,34 @@ using UnityEngine.SceneManagement;
 
 namespace Infrastructure.SceneManagement
 {
-  public class SceneLoader
-  {
-    private readonly ICoroutineRunner _coroutineRunner;
-
-    public SceneLoader(ICoroutineRunner coroutineRunner)
+    public class SceneLoader
     {
-        _coroutineRunner = coroutineRunner;
-    }
+        private readonly ICoroutineRunner _coroutineRunner;
 
-    public void Load(string name, Action onLoaded = null)
-    {
-        _coroutineRunner.StartCoroutine(LoadScene(name, onLoaded));
-    }
+        public SceneLoader(ICoroutineRunner coroutineRunner)
+        {
+            _coroutineRunner = coroutineRunner;
+        }
 
-    public IEnumerator LoadScene(string nextScene, Action onLoaded = null)
-    {
-      if (SceneManager.GetActiveScene().name == nextScene)
-      {
-        onLoaded?.Invoke();
-        yield break;
-      }
-      
-      AsyncOperation waitNextScene = SceneManager.LoadSceneAsync(nextScene);
+        public void Load(string name, Action onLoaded = null)
+        {
+            _coroutineRunner.StartCoroutine(LoadScene(name, onLoaded));
+        }
 
-      while (!waitNextScene.isDone)
-        yield return null;
-      
-      onLoaded?.Invoke();
+        public IEnumerator LoadScene(string nextScene, Action onLoaded = null)
+        {
+            if (SceneManager.GetActiveScene().name == nextScene)
+            {
+                onLoaded?.Invoke();
+                yield break;
+            }
+
+            AsyncOperation waitNextScene = SceneManager.LoadSceneAsync(nextScene);
+
+            while (!waitNextScene.isDone)
+                yield return null;
+
+            onLoaded?.Invoke();
+        }
     }
-  }
 }
