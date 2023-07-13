@@ -14,19 +14,20 @@ public class DependenciesInstaller : MonoInstaller
 {
     [SerializeField] private LoadingScreen _loadingScreen;
     [SerializeField] private AudioService _audioService;
+    [SerializeField] private CoroutineRunner _coroutineRunner;
     public override void InstallBindings()
     {
+        AssetsServiecesInstall();
+        
+        SaveSystemInstall();
+        
         SceneLoaderInstall();
 
         FactoriesInstall();
         
-        SaveSystemInstall();
-
         GameStateMachineInstall();
-
-        GameInstall();
         
-        AssetsServiecesInstall();
+        GameInstall();
         
         AudioServiceInstall();
     }
@@ -43,7 +44,11 @@ public class DependenciesInstaller : MonoInstaller
 
     private void SceneLoaderInstall()
     {
-        Container.Bind<SceneLoader>().AsSingle();
+        GameObject coroutineRunner = Container.InstantiatePrefab(_coroutineRunner);
+        ICoroutineRunner coroutineRunnerComponent = coroutineRunner.GetComponent<CoroutineRunner>();
+        
+        Container.Bind<ICoroutineRunner>().FromInstance(coroutineRunnerComponent).AsSingle();
+        Container.Bind<SceneLoader>().AsSingle().WithArguments(coroutineRunnerComponent);
         Container.Bind<LoadingScreen>().FromInstance(_loadingScreen).AsSingle();
     }
 
@@ -61,10 +66,6 @@ public class DependenciesInstaller : MonoInstaller
     private void GameStateMachineInstall()
     {
         Container.Bind<GameStateMachine>().AsSingle();
-        Container.Bind<LoadLevelState>().AsTransient();
-        Container.Bind<BootstrapState>().AsTransient();
-        Container.Bind<GameLoopState>().AsTransient();
-        Container.Bind<LoadProgressState>().AsTransient();
     }
 
     private void AudioServiceInstall()

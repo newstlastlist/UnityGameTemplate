@@ -5,7 +5,6 @@ using Infrastructure.SceneManagement;
 using Infrastructure.Services.PersistentProgress;
 using Infrastructure.Services.SaveLoad;
 using Infrastructure.UI;
-using Zenject;
 
 namespace Infrastructure.States
 {
@@ -14,9 +13,8 @@ namespace Infrastructure.States
         private Dictionary<Type, IExitableState> _states;
         private IExitableState _activeState;
         
-        [Inject]
-        public GameStateMachine(SceneLoader sceneLoader, LoadingScreen loadingScreen, GameFactory gameFactory, PersistentProgressService progressService
-            , SaveLoadService saveLoadService)
+        public GameStateMachine(SceneLoader sceneLoader, LoadingScreen loadingScreen, IGameFactory gameFactory, IPersistentProgressService progressService
+            , ISaveLoadService saveLoadService)
         {
             _states = new Dictionary<Type, IExitableState>
             {
