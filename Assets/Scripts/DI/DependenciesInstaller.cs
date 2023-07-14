@@ -6,29 +6,28 @@ using Infrastructure.SceneManagement;
 using Infrastructure.Services.PersistentProgress;
 using Infrastructure.Services.SaveLoad;
 using Infrastructure.States;
-using Infrastructure.UI;
-using UnityEngine;
 using Zenject;
 
 public class DependenciesInstaller : MonoInstaller
 {
-    [SerializeField] private LoadingScreen _loadingScreen;
-    [SerializeField] private AudioService _audioService;
-    [SerializeField] private CoroutineRunner _coroutineRunner;
+    private IGameFactory _gameFactory;
+
     public override void InstallBindings()
     {
         AssetsServiecesInstall();
-        
+
         FactoriesInstall();
-        
+
+        BindCoroutineRunner();
+
         SaveSystemInstall();
-        
+
         SceneLoaderInstall();
-        
+
         GameStateMachineInstall();
-        
+
         GameInstall();
-        
+
         AudioServiceInstall();
     }
 
@@ -42,18 +41,22 @@ public class DependenciesInstaller : MonoInstaller
         Container.Bind<Game>().AsSingle();
     }
 
+    private void BindCoroutineRunner()
+    {
+        CoroutineRunner coroutineRunner = _gameFactory.CreateCoroutineRunner();
+
+        Container.Bind<ICoroutineRunner>().FromInstance(coroutineRunner).AsSingle();
+    }
+
     private void SceneLoaderInstall()
     {
-        GameObject coroutineRunner = Container.InstantiatePrefab(_coroutineRunner);
-        ICoroutineRunner coroutineRunnerComponent = coroutineRunner.GetComponent<CoroutineRunner>();
-        
-        Container.Bind<ICoroutineRunner>().FromInstance(coroutineRunnerComponent).AsSingle();
-        Container.Bind<SceneLoader>().AsSingle().WithArguments(coroutineRunnerComponent, _loadingScreen);
+        Container.Bind<SceneLoader>().AsSingle();
     }
 
     private void FactoriesInstall()
     {
         Container.Bind<IGameFactory>().To<GameFactory>().AsSingle();
+        _gameFactory = Container.Resolve<IGameFactory>();
     }
 
     private void SaveSystemInstall()
@@ -69,6 +72,8 @@ public class DependenciesInstaller : MonoInstaller
 
     private void AudioServiceInstall()
     {
-        Container.Bind<AudioService>().FromInstance(_audioService).AsSingle();
+        AudioService audioService = _gameFactory.CreateAudioService();
+
+        Container.Bind<AudioService>().FromInstance(audioService).AsSingle();
     }
 }
