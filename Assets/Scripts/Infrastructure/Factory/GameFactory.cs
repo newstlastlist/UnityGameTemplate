@@ -1,6 +1,9 @@
 using System.Collections.Generic;
+using CodeBase.Infrastructure.AssetManagement;
 using Infrastructure.AssetManagement;
+using Infrastructure.AudioManagement;
 using Infrastructure.Services.PersistentProgress;
+using Infrastructure.UI;
 using UnityEngine;
 using Zenject;
 
@@ -19,8 +22,24 @@ namespace Infrastructure.Factory
             _assets = assets;
         }
 
-        // public GameObject CreateHero(GameObject at) =>
-        //     _assets.Instantiate(path: AssetPath.HeroPath, at: at.transform.position);
+        // public GameObject CreateHero(GameObject at)
+        // {
+        //     InstantiateRegistered(AssetPath.HeroPath, at.transform.position);
+        // }
+        public AudioService CreateAudioService()
+        {
+            return InstantiateRegistered(AssetPath.AudioServicePath).GetComponent<AudioService>();
+        }
+
+        public CoroutineRunner CreateCoroutineRunner()
+        {
+            return InstantiateRegistered(AssetPath.CoroutineRunner).GetComponent<CoroutineRunner>();
+        }
+
+        public LoadingScreen CreateLoadingScreen()
+        {
+            return InstantiateRegistered(AssetPath.LoadingScreenPath).GetComponent<LoadingScreen>();
+        }
         public void Cleanup()
         {
             ProgressReaders.Clear();
