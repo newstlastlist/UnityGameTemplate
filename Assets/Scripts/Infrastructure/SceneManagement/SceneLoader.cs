@@ -1,24 +1,34 @@
 ﻿using System;
 using System.Collections;
+using Infrastructure.Factory;
 using Infrastructure.UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Zenject;
 
 namespace Infrastructure.SceneManagement
 {
     public class SceneLoader
     {
         private readonly ICoroutineRunner _coroutineRunner;
-        private readonly LoadingScreen _loadingScreen;
+        private readonly IGameFactory _gameFactory;
+        
+        private LoadingScreen _loadingScreen;
 
-        public SceneLoader(ICoroutineRunner coroutineRunner, LoadingScreen loadingScreen)
+        [Inject]
+        public SceneLoader(ICoroutineRunner coroutineRunner, IGameFactory gameFactory)
         {
             _coroutineRunner = coroutineRunner;
-            _loadingScreen = loadingScreen;
+            _gameFactory = gameFactory;
         }
 
         public void Load(string name, Action onLoaded = null)
         {
+            if (_loadingScreen == null)
+            {
+                _loadingScreen = _gameFactory.CreateLoadingScreen();
+            }
+            
             _coroutineRunner.StartCoroutine(LoadScene(name, onLoaded));
         }
 
