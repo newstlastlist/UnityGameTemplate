@@ -17,7 +17,6 @@ namespace Infrastructure
         }
         private void Start()
         {
-            print(_game == null);
             _game.StateMachine.Enter<BootstrapState>();
             
             DontDestroyOnLoad(this);

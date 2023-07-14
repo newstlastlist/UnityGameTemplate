@@ -9,6 +9,7 @@ namespace Infrastructure.States
         private GameStateMachine _stateMachine;
         private SceneLoader _sceneLoader;
 
+        [Inject]
         public BootstrapState(GameStateMachine stateMachine, SceneLoader sceneLoader)
         {
             _stateMachine = stateMachine;
