@@ -4,7 +4,7 @@ using Infrastructure.Factory;
 using Infrastructure.SceneManagement;
 using Infrastructure.Services.PersistentProgress;
 using Infrastructure.Services.SaveLoad;
-using Infrastructure.UI;
+using Zenject;
 
 namespace Infrastructure.States
 {
@@ -13,13 +13,14 @@ namespace Infrastructure.States
         private Dictionary<Type, IExitableState> _states;
         private IExitableState _activeState;
         
-        public GameStateMachine(SceneLoader sceneLoader, LoadingScreen loadingScreen, IGameFactory gameFactory, IPersistentProgressService progressService
+        [Inject]
+        public GameStateMachine(SceneLoader sceneLoader, IGameFactory gameFactory, IPersistentProgressService progressService
             , ISaveLoadService saveLoadService)
         {
             _states = new Dictionary<Type, IExitableState>
             {
                 [typeof(BootstrapState)] = new BootstrapState(this, sceneLoader),
-                [typeof(LoadLevelState)] = new LoadLevelState(this, sceneLoader, loadingScreen, gameFactory, progressService),
+                [typeof(LoadLevelState)] = new LoadLevelState(this, sceneLoader, gameFactory, progressService),
                 [typeof(GameLoopState)] = new GameLoopState(this),
                 [typeof(LoadProgressState)] = new LoadProgressState(this, progressService, saveLoadService)
             };

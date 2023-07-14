@@ -1,7 +1,6 @@
 ﻿using Data;
 using Infrastructure.Services.PersistentProgress;
 using Infrastructure.Services.SaveLoad;
-using Zenject;
 
 namespace Infrastructure.States
 {
@@ -36,7 +35,9 @@ namespace Infrastructure.States
                 ?? NewProgress();
         }
 
-        private PlayerProgress NewProgress() => 
-            new PlayerProgress(initialLevel: "Main");
+        private PlayerProgress NewProgress()
+        {
+            return new PlayerProgress(initialLevel: "Main");
+        }
     }
 }

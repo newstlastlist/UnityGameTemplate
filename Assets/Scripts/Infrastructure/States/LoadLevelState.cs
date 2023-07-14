@@ -2,7 +2,6 @@
 using Infrastructure.SceneManagement;
 using Infrastructure.Services.PersistentProgress;
 using Infrastructure.UI;
-using Zenject;
 
 namespace Infrastructure.States
 {
@@ -10,16 +9,14 @@ namespace Infrastructure.States
     {
         private GameStateMachine _stateMachine;
         private SceneLoader _sceneLoader;
-        private LoadingScreen _loadingScreen;
         private IGameFactory _gameFactory;
         private IPersistentProgressService _progressService;
 
-        public LoadLevelState(GameStateMachine gameStateMachine, SceneLoader sceneLoader, LoadingScreen loadingScreen, IGameFactory gameFactory,
+        public LoadLevelState(GameStateMachine gameStateMachine, SceneLoader sceneLoader, IGameFactory gameFactory,
             IPersistentProgressService progressService)
         {
             _stateMachine = gameStateMachine;
             _sceneLoader = sceneLoader;
-            _loadingScreen = loadingScreen;
             _gameFactory = gameFactory;
             _progressService = progressService;
         }
@@ -37,9 +34,15 @@ namespace Infrastructure.States
 
         private void OnLoaded()
         {
+            //here we should init game world (create some hero/enemys etc via GameFactory)
+            
+            InformProgressReaders();
+            
             _stateMachine.Enter<GameLoopState>();
         }
 
+        //restore all saved progress for all entities
+        //(dont forgot that all entities that may be saved should be in GameFactory.ProgressReaders)
         private void InformProgressReaders()
         {
             foreach (ISavedProgressReader progressReader in _gameFactory.ProgressReaders)

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Infrastructure.AssetManagement;
 using Infrastructure.Services.PersistentProgress;
 using UnityEngine;
+using Zenject;
 
 namespace Infrastructure.Factory
 {
@@ -12,10 +13,10 @@ namespace Infrastructure.Factory
         public List<ISavedProgressReader> ProgressReaders { get; } = new List<ISavedProgressReader>();
         public List<ISavedProgress> ProgressWriters { get; } = new List<ISavedProgress>();
 
+        [Inject]
         public GameFactory(IAssetProvider assets)
         {
             _assets = assets;
-            Debug.Log(_assets == null);
         }
 
         // public GameObject CreateHero(GameObject at) =>

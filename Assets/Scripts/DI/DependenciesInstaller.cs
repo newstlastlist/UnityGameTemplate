@@ -19,11 +19,11 @@ public class DependenciesInstaller : MonoInstaller
     {
         AssetsServiecesInstall();
         
+        FactoriesInstall();
+        
         SaveSystemInstall();
         
         SceneLoaderInstall();
-
-        FactoriesInstall();
         
         GameStateMachineInstall();
         
@@ -48,8 +48,7 @@ public class DependenciesInstaller : MonoInstaller
         ICoroutineRunner coroutineRunnerComponent = coroutineRunner.GetComponent<CoroutineRunner>();
         
         Container.Bind<ICoroutineRunner>().FromInstance(coroutineRunnerComponent).AsSingle();
-        Container.Bind<SceneLoader>().AsSingle().WithArguments(coroutineRunnerComponent);
-        Container.Bind<LoadingScreen>().FromInstance(_loadingScreen).AsSingle();
+        Container.Bind<SceneLoader>().AsSingle().WithArguments(coroutineRunnerComponent, _loadingScreen);
     }
 
     private void FactoriesInstall()
