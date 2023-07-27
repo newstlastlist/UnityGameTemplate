@@ -16,19 +16,14 @@ namespace Infrastructure.SceneManagement
         private LoadingScreen _loadingScreen;
 
         [Inject]
-        public SceneLoader(ICoroutineRunner coroutineRunner, IGameFactory gameFactory)
+        public SceneLoader(ICoroutineRunner coroutineRunner, LoadingScreen loadingScreen)
         {
             _coroutineRunner = coroutineRunner;
-            _gameFactory = gameFactory;
+            _loadingScreen = loadingScreen;
         }
 
         public void Load(string name, Action onLoaded = null)
         {
-            if (_loadingScreen == null)
-            {
-                _loadingScreen = _gameFactory.CreateLoadingScreen();
-            }
-            
             _coroutineRunner.StartCoroutine(LoadScene(name, onLoaded));
         }
 

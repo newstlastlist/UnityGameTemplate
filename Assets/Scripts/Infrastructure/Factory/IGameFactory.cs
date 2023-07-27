@@ -1,8 +1,6 @@
 using System.Collections.Generic;
-using Infrastructure.AudioManagement;
 using Infrastructure.Services;
 using Infrastructure.Services.PersistentProgress;
-using Infrastructure.UI;
 
 namespace Infrastructure.Factory
 {
@@ -10,9 +8,6 @@ namespace Infrastructure.Factory
     {
         // GameObject CreateHero(GameObject at);
         // void CreateHud();
-        AudioService CreateAudioService();
-        CoroutineRunner CreateCoroutineRunner();
-        LoadingScreen CreateLoadingScreen();
         List<ISavedProgressReader> ProgressReaders { get; }
         List<ISavedProgress> ProgressWriters { get; }
         void Cleanup();

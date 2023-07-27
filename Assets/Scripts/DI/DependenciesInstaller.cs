@@ -6,10 +6,16 @@ using Infrastructure.SceneManagement;
 using Infrastructure.Services.PersistentProgress;
 using Infrastructure.Services.SaveLoad;
 using Infrastructure.States;
+using Infrastructure.UI;
+using UnityEngine;
 using Zenject;
 
 public class DependenciesInstaller : MonoInstaller
 {
+    [SerializeField] private LoadingScreen _loadingScreen;
+    [SerializeField] private CoroutineRunner _coroutineRunner;
+    [SerializeField] private AudioService _audioService;
+    
     private IGameFactory _gameFactory;
 
     public override void InstallBindings()
@@ -43,9 +49,7 @@ public class DependenciesInstaller : MonoInstaller
 
     private void BindCoroutineRunner()
     {
-        CoroutineRunner coroutineRunner = _gameFactory.CreateCoroutineRunner();
-
-        Container.Bind<ICoroutineRunner>().FromInstance(coroutineRunner).AsSingle();
+        Container.Bind<ICoroutineRunner>().FromInstance(_coroutineRunner).AsSingle();
     }
 
     private void SceneLoaderInstall()
@@ -72,8 +76,10 @@ public class DependenciesInstaller : MonoInstaller
 
     private void AudioServiceInstall()
     {
-        AudioService audioService = _gameFactory.CreateAudioService();
-
-        Container.Bind<AudioService>().FromInstance(audioService).AsSingle();
+        Container.Bind<AudioService>().FromInstance(_audioService).AsSingle();
+    }
+    private void LoadingScreenInstall()
+    {
+        Container.Bind<LoadingScreen>().FromInstance(_loadingScreen).AsSingle();
     }
 }
