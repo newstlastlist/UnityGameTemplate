@@ -4,6 +4,7 @@
     {
         Idle,
         Run,
-        Unknown
+        Unknown,
+        Walking
     }
 }

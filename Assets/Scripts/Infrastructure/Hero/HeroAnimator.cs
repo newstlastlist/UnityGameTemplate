@@ -10,6 +10,8 @@ namespace Infrastructure.Hero
         [SerializeField] private CharacterController _characterController;
         [SerializeField] public Animator _animator;
 
+        private static readonly int MoveHash = Animator.StringToHash("Walking");
+        
         private readonly int _idleStateHash = Animator.StringToHash("Idle");
         private readonly int _runningStateHash = Animator.StringToHash("Run");
 
@@ -20,7 +22,7 @@ namespace Infrastructure.Hero
 
         private void Update()
         {
-            _animator.SetFloat(_runningStateHash, _characterController.velocity.magnitude, 0.1f, Time.deltaTime);
+            _animator.SetFloat(MoveHash, _characterController.velocity.magnitude, 0.1f, Time.deltaTime);
         }
 
         public void ResetToIdle()
