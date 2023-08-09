@@ -11,7 +11,6 @@ namespace Infrastructure.SceneManagement
     public class SceneLoader
     {
         private readonly ICoroutineRunner _coroutineRunner;
-        private readonly IGameFactory _gameFactory;
         
         private LoadingScreen _loadingScreen;
 
@@ -29,6 +28,8 @@ namespace Infrastructure.SceneManagement
 
         public IEnumerator LoadScene(string nextScene, Action onLoaded = null)
         {
+            _loadingScreen.Show();
+            
             if (SceneManager.GetActiveScene().name == nextScene)
             {
                 onLoaded?.Invoke();
@@ -36,10 +37,41 @@ namespace Infrastructure.SceneManagement
             }
 
             AsyncOperation waitNextScene = SceneManager.LoadSceneAsync(nextScene);
+            float startTime = Time.time;
 
             while (!waitNextScene.isDone)
+            {
+                _loadingScreen.UpdateProgress(waitNextScene.progress / 3);
                 yield return null;
+            }
 
+            float loadingTime = Time.time - startTime;
+
+            if (loadingTime < 3f)
+            {
+                _coroutineRunner.StartCoroutine(FakeLoadingAnimation(3f - loadingTime, onLoaded));
+            }
+            else
+            {
+                _loadingScreen.Hide();
+                onLoaded?.Invoke();
+            }
+        }
+        private IEnumerator FakeLoadingAnimation(float duration, Action onLoaded)
+        {
+            float startTime = Time.time;
+            float startProgress = _loadingScreen.CurrentProgress;
+
+            while (Time.time - startTime < duration)
+            {
+                float elapsed = Time.time - startTime;
+                float progress = Mathf.Lerp(startProgress, 1f, elapsed / duration);
+                _loadingScreen.UpdateProgress(progress);
+                yield return null;
+            }
+
+            _loadingScreen.UpdateProgress(1f);
+            _loadingScreen.Hide();
             onLoaded?.Invoke();
         }
     }

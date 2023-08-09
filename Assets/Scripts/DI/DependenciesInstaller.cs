@@ -20,6 +20,8 @@ public class DependenciesInstaller : MonoInstaller
 
     public override void InstallBindings()
     {
+        LoadingScreenInstall();
+        
         AssetsServiecesInstall();
 
         FactoriesInstall();

@@ -297,6 +297,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1188480268054972172}
     m_Modifications:
+    - target: {fileID: 2752046075690767807, guid: 8b737397d1054834399ad9cae98d8cc7, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2752046075690767807, guid: 8b737397d1054834399ad9cae98d8cc7, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6361122096373358178, guid: 8b737397d1054834399ad9cae98d8cc7, type: 3}
       propertyPath: m_Name
       value: LoadingScreen
