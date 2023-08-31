@@ -1,7 +1,6 @@
 ﻿using Infrastructure.Factory;
 using Infrastructure.SceneManagement;
 using Infrastructure.Services.PersistentProgress;
-using Infrastructure.UI;
 
 namespace Infrastructure.States
 {

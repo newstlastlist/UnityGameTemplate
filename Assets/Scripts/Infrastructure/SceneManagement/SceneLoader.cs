@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 using Infrastructure.Factory;
-using Infrastructure.UI;
+using Infrastructure.UI.LoadingScreen;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Zenject;

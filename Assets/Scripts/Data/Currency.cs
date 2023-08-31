@@ -5,6 +5,8 @@ namespace Data
     [Serializable]
     public class Currency
     {
-        public int Money;
+        public int CollectedMoney;
+        
+        // public void Collect()
     }
 }

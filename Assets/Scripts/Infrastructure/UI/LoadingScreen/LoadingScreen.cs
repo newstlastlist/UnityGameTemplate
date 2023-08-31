@@ -1,9 +1,9 @@
-using System;
+﻿using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Infrastructure.UI
+namespace Infrastructure.UI.LoadingScreen
 {
     public class LoadingScreen : MonoBehaviour
     {
