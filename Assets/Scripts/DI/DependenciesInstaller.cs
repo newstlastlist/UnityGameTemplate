@@ -36,9 +36,9 @@ public class DependenciesInstaller : MonoInstaller
 
         RandomizerServiceInstaller();
 
-        AssetsServiecesInstall();
-
         StaticDataServiceInstall();
+        
+        AssetsServiecesInstall();
 
         SaveSystemInstall();
         
@@ -67,9 +67,12 @@ public class DependenciesInstaller : MonoInstaller
 
     private void StaticDataServiceInstall()
     {
+        IStaticDataService staticDataService = new StaticDataService();
+        staticDataService.Load();
+        
         Container
             .Bind<IStaticDataService>()
-            .To<StaticDataService>()
+            .FromInstance(staticDataService)
             .AsSingle();
     }
 

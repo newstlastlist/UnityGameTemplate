@@ -5,7 +5,7 @@ namespace Infrastructure.Services.StaticData
 {
     public interface IStaticDataService : IService
     {
-        void LoadUI();
+        void Load();
         WindowConfig ForWindow(WindowId id);
     }
 }

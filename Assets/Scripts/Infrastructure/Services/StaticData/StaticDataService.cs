@@ -10,7 +10,7 @@ namespace Infrastructure.Services.StaticData
     {
         private Dictionary<WindowId, WindowConfig> _windowConfigs;
 
-        public void LoadUI()
+        public void Load()
         {
             _windowConfigs = Resources
                 .Load<WindowStaticData>(ConstString.StaticDataWindowsPath)
