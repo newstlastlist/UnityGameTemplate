@@ -1,5 +1,6 @@
 ﻿using System;
 using Logic;
+using Logic.Animations;
 using UnityEngine;
 
 namespace Infrastructure.Hero

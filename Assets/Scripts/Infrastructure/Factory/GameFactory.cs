@@ -1,6 +1,9 @@
 using System.Collections.Generic;
+using CodeBase.Infrastructure.AssetManagement;
 using Infrastructure.AssetManagement;
 using Infrastructure.Services.PersistentProgress;
+using Loot;
+using Loot.Money;
 using UnityEngine;
 using Zenject;
 
@@ -9,20 +12,32 @@ namespace Infrastructure.Factory
     public class GameFactory : IGameFactory
     {
         private readonly IAssetProvider _assets;
+        private readonly IPersistentProgressService _persistentProgressService;
         
         public List<ISavedProgressReader> ProgressReaders { get; } = new List<ISavedProgressReader>();
         public List<ISavedProgress> ProgressWriters { get; } = new List<ISavedProgress>();
 
         [Inject]
-        public GameFactory(IAssetProvider assets)
+        public GameFactory(IAssetProvider assets, IPersistentProgressService progressService)
         {
             _assets = assets;
+            _persistentProgressService = progressService;
         }
 
         // public GameObject CreateHero(GameObject at)
         // {
         //     InstantiateRegistered(AssetPath.HeroPath, at.transform.position);
         // }
+
+        public MoneyEntity CreateMoneyEntity()
+        {
+            MoneyEntity moneyEntity = InstantiateRegistered(AssetPath.Money)
+                .GetComponent<MoneyEntity>();
+            
+            moneyEntity.Construnct(_persistentProgressService.Progress.CurrencyData);
+
+            return moneyEntity;
+        }
        
         public void Cleanup()
         {

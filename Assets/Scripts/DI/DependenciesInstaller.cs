@@ -1,3 +1,4 @@
+using Helpers.Services;
 using Infrastructure;
 using Infrastructure.AssetManagement;
 using Infrastructure.AudioManagement;
@@ -33,15 +34,17 @@ public class DependenciesInstaller : MonoInstaller
     {
         LoadingScreenInstall();
 
+        RandomizerServiceInstaller();
+
         AssetsServiecesInstall();
 
         StaticDataServiceInstall();
 
+        SaveSystemInstall();
+        
         FactoriesInstall();
 
         BindCoroutineRunner();
-
-        SaveSystemInstall();
 
         SceneLoaderInstall();
 
@@ -138,6 +141,14 @@ public class DependenciesInstaller : MonoInstaller
         Container
             .Bind<AudioService>()
             .FromInstance(_audioService)
+            .AsSingle();
+    }
+
+    private void RandomizerServiceInstaller()
+    {
+        Container
+            .Bind<IRandomizerService>()
+            .To<RandomizerService>()
             .AsSingle();
     }
 

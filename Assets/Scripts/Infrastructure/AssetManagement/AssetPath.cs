@@ -4,5 +4,6 @@ namespace CodeBase.Infrastructure.AssetManagement
     {
         public const string AudioServicePath = "Services/AudioService";
         public const string CoroutineRunner = "Infrastructure/CoroutineRunner";
+        public const string Money = "";
     }
 }

@@ -46,14 +46,23 @@ namespace Infrastructure.UI.Windows
     }
     
     //example
-    public class SomeWindow : WindowBase
-    {
-        public TextMeshProUGUI _someTextInfo;
-
-        protected override void Initialize()
-            => RefreshMoneyText();
-
-        private void RefreshMoneyText()
-            => _someTextInfo.text = PlayerProgress.Currency.CollectedMoney.ToString();
-    }
+    // public class SomeWindow : WindowBase
+    // {
+    //     [SerializeField] private TextMeshProUGUI _someTextInfo;
+    //
+    //     protected override void Initialize()
+    //         => RefreshMoneyText();
+    //
+    //     protected override void SubscribeUpdates()
+    //         => PlayerProgress.CurrencyData.Changed += RefreshMoneyText;
+    //
+    //     protected override void CleanUp()
+    //     {
+    //         base.CleanUp();
+    //         PlayerProgress.CurrencyData.Changed -= RefreshMoneyText;
+    //     }
+    //
+    //     private void RefreshMoneyText()
+    //         => _someTextInfo.text = PlayerProgress.CurrencyData.CollectedMoney.ToString();
+    // }
 }

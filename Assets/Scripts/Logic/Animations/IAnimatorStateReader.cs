@@ -1,4 +1,4 @@
-﻿namespace Logic
+﻿namespace Logic.Animations
 {
     public interface IAnimationStateReader
     {
