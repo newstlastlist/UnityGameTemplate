@@ -1,20 +1,19 @@
 ﻿using System;
-using Loot;
 using Loot.Money;
+using UniRx;
 
 namespace Data
 {
     [Serializable]
     public class CurrencyData
     {
-        public int CollectedMoney;
+        private readonly ReactiveProperty<int> _collectedMoney = new ReactiveProperty<int>(0);
 
-        public Action Changed;
+        public IReadOnlyReactiveProperty<int> CollectedMoney => _collectedMoney;
 
         public void Collect(Money money)
         {
-            CollectedMoney += money.Value;
-            Changed?.Invoke();
+            _collectedMoney.Value += money.Value;
         }
     }
 }

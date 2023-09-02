@@ -1,7 +1,7 @@
-using System;
 using Data;
 using Infrastructure.Services.PersistentProgress;
 using TMPro;
+using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -45,24 +45,20 @@ namespace Infrastructure.UI.Windows
         protected virtual void CleanUp() { }
     }
     
-    //example
-    // public class SomeWindow : WindowBase
-    // {
-    //     [SerializeField] private TextMeshProUGUI _someTextInfo;
+    // example
+    //  public class SomeWindow : WindowBase
+    //  {
+    //      [SerializeField] private TextMeshProUGUI _someTextInfo;
     //
-    //     protected override void Initialize()
-    //         => RefreshMoneyText();
+    //      protected override void Initialize()
+    //          => RefreshMoneyText(PlayerProgress.CurrencyData.CollectedMoney.Value);
     //
-    //     protected override void SubscribeUpdates()
-    //         => PlayerProgress.CurrencyData.Changed += RefreshMoneyText;
+    //      protected override void SubscribeUpdates()
+    //          => PlayerProgress.CurrencyData.CollectedMoney
+    //              .Subscribe(RefreshMoneyText)
+    //              .AddTo(this);
     //
-    //     protected override void CleanUp()
-    //     {
-    //         base.CleanUp();
-    //         PlayerProgress.CurrencyData.Changed -= RefreshMoneyText;
-    //     }
-    //
-    //     private void RefreshMoneyText()
-    //         => _someTextInfo.text = PlayerProgress.CurrencyData.CollectedMoney.ToString();
-    // }
+    //      private void RefreshMoneyText(int moneyValue)
+    //          => _someTextInfo.text = moneyValue.ToString();
+    //  }
 }
