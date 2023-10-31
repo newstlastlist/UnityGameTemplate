@@ -1,24 +1,29 @@
 ﻿using Infrastructure.SceneManagement;
+using Settings;
+using UnityEngine;
 using Zenject;
 
 namespace Infrastructure.States
 {
     public class BootstrapState : IState
     {
-        private const string BootStrap = "BootstrapScene";
+        
         private GameStateMachine _stateMachine;
         private SceneLoader _sceneLoader;
+        private ApplicationSettings _applicationSettings;
 
         [Inject]
-        public BootstrapState(GameStateMachine stateMachine, SceneLoader sceneLoader)
+        public BootstrapState(GameStateMachine stateMachine, SceneLoader sceneLoader, ApplicationSettings applicationSettings)
         {
             _stateMachine = stateMachine;
             _sceneLoader = sceneLoader;
+            _applicationSettings = applicationSettings;
         }
 
         public void Enter()
         {
-            _sceneLoader.Load(BootStrap, onLoaded: EnterLoadLevel);
+            Application.targetFrameRate = _applicationSettings.TargetFrameRate;
+            _sceneLoader.Load(ConstString.BootStrap, onLoaded: EnterLoadLevel);
         }
 
         public void Exit()
@@ -27,7 +32,7 @@ namespace Infrastructure.States
 
         private void EnterLoadLevel()
         {
-            _stateMachine.Enter<LoadLevelState, string>("Level1");
+            _stateMachine.Enter<LoadLevelState, string>(ConstString.Level1);
         }
     }
 }

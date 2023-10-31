@@ -1,31 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
-using Infrastructure.Factory;
-using Infrastructure.SceneManagement;
-using Infrastructure.Services.PersistentProgress;
-using Infrastructure.Services.SaveLoad;
-using Zenject;
 
 namespace Infrastructure.States
 {
     public class GameStateMachine
     {
-        private Dictionary<Type, IExitableState> _states;
-        private IExitableState _activeState;
+        private Dictionary<Type, IState> _states = new Dictionary<Type, IState>();
+        private IState _activeState;
         
-        [Inject]
-        public GameStateMachine(SceneLoader sceneLoader, IGameFactory gameFactory, IPersistentProgressService progressService
-            , ISaveLoadService saveLoadService)
+        // [Inject]
+        // public GameStateMachine(IStateFactory stateFactory)
+        // {
+        //     _states = new Dictionary<Type, IExitableState>
+        //     {
+        //         [typeof(BootstrapState)] = stateFactory.Create<BootstrapState>(),
+        //         [typeof(LoadLevelState)] = stateFactory.CreatePayloadedState<LoadLevelState>(),
+        //         [typeof(GameLoopState)] = stateFactory.Create<GameLoopState>(),
+        //         [typeof(LoadProgressState)] = stateFactory.Create<LoadProgressState>()
+        //     };
+        // }
+        // public GameStateMachine(Dictionary<Type, IExitableState> states)
+        // {
+        //     _states = states;
+        // }
+        public void AddState(Type stateType,IState state)
         {
-            _states = new Dictionary<Type, IExitableState>
-            {
-                [typeof(BootstrapState)] = new BootstrapState(this, sceneLoader),
-                [typeof(LoadLevelState)] = new LoadLevelState(this, sceneLoader, gameFactory, progressService),
-                [typeof(GameLoopState)] = new GameLoopState(this),
-                [typeof(LoadProgressState)] = new LoadProgressState(this, progressService, saveLoadService)
-            };
+            _states.Add(stateType, state);
         }
-
         public void Enter<TState>() where TState : class, IState
         {
             IState state = ChangeState<TState>();
@@ -38,7 +39,7 @@ namespace Infrastructure.States
             state.Enter(payload);
         }
 
-        private TState ChangeState<TState>() where TState : class, IExitableState
+        private TState ChangeState<TState>() where TState : class, IState
         {
             _activeState?.Exit();
 
@@ -48,7 +49,7 @@ namespace Infrastructure.States
             return state;
         }
 
-        private TState GetState<TState>() where TState : class, IExitableState =>
+        private TState GetState<TState>() where TState : class, IState =>
             _states[typeof(TState)] as TState;
     }
 }

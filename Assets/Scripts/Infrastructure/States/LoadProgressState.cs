@@ -1,6 +1,7 @@
 ﻿using Data;
 using Infrastructure.Services.PersistentProgress;
 using Infrastructure.Services.SaveLoad;
+using Zenject;
 
 namespace Infrastructure.States
 {
@@ -10,6 +11,7 @@ namespace Infrastructure.States
         private readonly IPersistentProgressService _progressService;
         private readonly ISaveLoadService _saveLoadProgress;
 
+        [Inject]
         public LoadProgressState(GameStateMachine gameStateMachine, IPersistentProgressService progressService, ISaveLoadService saveLoadProgress)
         {
             _gameStateMachine = gameStateMachine;

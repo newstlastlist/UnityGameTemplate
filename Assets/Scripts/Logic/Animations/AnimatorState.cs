@@ -5,6 +5,7 @@
         Idle,
         Run,
         Unknown,
-        Walking
+        HandCarry,
+        Walk
     }
 }

@@ -1,20 +1,20 @@
 ﻿using System;
-using Logic;
 using Logic.Animations;
 using UnityEngine;
 
-namespace Infrastructure.Hero
+namespace Game.Characters.Hero
 {
     public class HeroAnimator : MonoBehaviour, IAnimationStateReader
     {
-        //example
         [SerializeField] private CharacterController _characterController;
         [SerializeField] public Animator _animator;
 
         private static readonly int MoveHash = Animator.StringToHash("Walking");
-        
+        private static readonly int CargroHash = Animator.StringToHash("Cargo");
+
         private readonly int _idleStateHash = Animator.StringToHash("Idle");
-        private readonly int _runningStateHash = Animator.StringToHash("Run");
+        private readonly int _walkingStateHash = Animator.StringToHash("Run");
+        private readonly int _carryStateHash = Animator.StringToHash("HandCarry");
 
         public event Action<AnimatorState> StateEntered;
         public event Action<AnimatorState> StateExited;
@@ -23,7 +23,7 @@ namespace Infrastructure.Hero
 
         private void Update()
         {
-            _animator.SetFloat(MoveHash, _characterController.velocity.magnitude, 0.1f, Time.deltaTime);
+            _animator.SetFloat(MoveHash, _characterController.velocity.magnitude, 0.1f, 10 * Time.deltaTime);
         }
 
         public void ResetToIdle()
@@ -41,6 +41,11 @@ namespace Infrastructure.Hero
         {
             StateExited?.Invoke(StateFor(stateHash));
         }
+        
+        private void OnCargoCountChanged(int newCargoCount)
+        {
+            _animator.SetInteger(CargroHash, newCargoCount);
+        }
 
         private AnimatorState StateFor(int stateHash)
         {
@@ -49,9 +54,13 @@ namespace Infrastructure.Hero
             {
                 state = AnimatorState.Idle;
             }
-            else if (stateHash == _runningStateHash)
+            else if (stateHash == _walkingStateHash)
             {
-                state = AnimatorState.Run;
+                state = AnimatorState.Walk;
+            }
+            else if (stateHash == _carryStateHash)
+            {
+                state = AnimatorState.HandCarry;
             }
             else
             {

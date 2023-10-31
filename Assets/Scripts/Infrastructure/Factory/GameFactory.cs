@@ -45,17 +45,31 @@ namespace Infrastructure.Factory
             ProgressWriters.Clear();
         }
 
-        private GameObject InstantiateRegistered(string prefabPath, Vector3 at)
+        protected GameObject InstantiateRegistered(string prefabPath, Vector3 at)
         {
             GameObject gameObject = _assets.Instantiate(path: prefabPath, at: at);
 
             RegisterProgressWatchers(gameObject);
             return gameObject;
         } 
+        protected GameObject InstantiateRegistered(GameObject prefab, Vector3 at)
+        {
+            GameObject gameObject = GameObject.Instantiate(prefab, at, Quaternion.identity);
+
+            RegisterProgressWatchers(gameObject);
+            return gameObject;
+        } 
     
-        private GameObject InstantiateRegistered(string prefabPath)
+        protected GameObject InstantiateRegistered(string prefabPath)
         {
             GameObject gameObject = _assets.Instantiate(path: prefabPath);
+
+            RegisterProgressWatchers(gameObject);
+            return gameObject;
+        }
+        protected GameObject InstantiateRegistered(GameObject prefab)
+        {
+            GameObject gameObject = GameObject.Instantiate(prefab);
 
             RegisterProgressWatchers(gameObject);
             return gameObject;

@@ -1,34 +1,40 @@
 ﻿using Infrastructure.Factory;
 using Infrastructure.SceneManagement;
 using Infrastructure.Services.PersistentProgress;
+using Zenject;
 
 namespace Infrastructure.States
 {
-    public class LoadLevelState : IPayloadedState<string>
+    public class LoadLevelState : IPayloadedState<string>, IState
     {
         private GameStateMachine _stateMachine;
         private SceneLoader _sceneLoader;
         private IGameFactory _gameFactory;
         private IPersistentProgressService _progressService;
+        private readonly VariableJoystick _joystick;
 
+        [Inject]
         public LoadLevelState(GameStateMachine gameStateMachine, SceneLoader sceneLoader, IGameFactory gameFactory,
-            IPersistentProgressService progressService)
+            IPersistentProgressService progressService, VariableJoystick joystick)
         {
             _stateMachine = gameStateMachine;
             _sceneLoader = sceneLoader;
             _gameFactory = gameFactory;
             _progressService = progressService;
+            _joystick = joystick;
         }
 
         public void Enter(string sceneName)
         {
-            // _loadingCurtain.Show();
             _sceneLoader.Load(sceneName, OnLoaded);
+        }
+
+        public void Enter()
+        {
         }
 
         public void Exit()
         {
-            // _loadingCurtain.Hide();
         }
 
         private void OnLoaded()
@@ -36,6 +42,8 @@ namespace Infrastructure.States
             //here we should init game world (create some hero/enemys etc via GameFactory)
             
             InformProgressReaders();
+            
+            _joystick.Show();
             
             _stateMachine.Enter<GameLoopState>();
         }
